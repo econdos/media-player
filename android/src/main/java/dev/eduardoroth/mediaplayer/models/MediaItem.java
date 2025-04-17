@@ -2,6 +2,8 @@ package dev.eduardoroth.mediaplayer.models;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
+
 import androidx.media3.common.C;
 import androidx.media3.common.MediaItem.SubtitleConfiguration;
 import androidx.media3.common.MediaMetadata;
@@ -18,6 +20,7 @@ public class MediaItem {
     private boolean _hasSubtitles = false;
 
     public MediaItem(Uri url, ExtraOptions extra) {
+        Log.e("RTSP URI", url.toString());
         MediaMetadata.Builder movieMetadataBuilder = new MediaMetadata.Builder()
             .setTitle(extra.title)
             .setSubtitle(extra.subtitle)
