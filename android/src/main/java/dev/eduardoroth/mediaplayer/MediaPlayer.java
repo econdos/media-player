@@ -345,7 +345,7 @@ public class MediaPlayer {
             }
         } else if (url.contains("public/assets")) {
             path = "/android_asset/" + url;
-        } else if (url.startsWith("http")) {
+        } else if (url.startsWith("http") || url.startsWith("rtsp")) {
             path = url;
         }
         return path;
