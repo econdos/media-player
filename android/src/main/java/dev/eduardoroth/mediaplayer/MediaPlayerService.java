@@ -18,6 +18,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ServiceLifecycleDispatcher;
 import androidx.media3.common.AudioAttributes;
+import androidx.media3.common.MediaItem;
 import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
 import androidx.media3.exoplayer.DefaultLoadControl;
@@ -30,7 +31,6 @@ import androidx.media3.session.MediaSession.ControllerInfo;
 import androidx.media3.session.MediaSessionService;
 import dev.eduardoroth.mediaplayer.models.AndroidOptions;
 import dev.eduardoroth.mediaplayer.models.ExtraOptions;
-import dev.eduardoroth.mediaplayer.models.MediaItem;
 import dev.eduardoroth.mediaplayer.models.MediaPlayerNotification;
 import dev.eduardoroth.mediaplayer.models.PlacementOptions;
 import dev.eduardoroth.mediaplayer.state.MediaPlayerState;
@@ -136,7 +136,7 @@ public class MediaPlayerService extends MediaSessionService implements Lifecycle
 
         exoPlayer.setRepeatMode(extra.loopOnEnd ? Player.REPEAT_MODE_ONE : Player.REPEAT_MODE_OFF);
 
-        exoPlayer.setMediaItem(new MediaItem(Uri.parse(videoUrl), extra).getMediaItem());
+        exoPlayer.setMediaItem(MediaItem.fromUri(videoUrl));
         Handler handlerCurrentTime = new Handler();
         exoPlayer.addListener(
             new Player.Listener() {
