@@ -18,7 +18,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ServiceLifecycleDispatcher;
 import androidx.media3.common.AudioAttributes;
-import androidx.media3.common.MediaItem;
 import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
 import androidx.media3.exoplayer.DefaultLoadControl;
@@ -32,6 +31,7 @@ import androidx.media3.session.MediaSession;
 import androidx.media3.session.MediaSession.ControllerInfo;
 import androidx.media3.session.MediaSessionService;
 import dev.eduardoroth.mediaplayer.models.AndroidOptions;
+import dev.eduardoroth.mediaplayer.models.MediaItem;
 import dev.eduardoroth.mediaplayer.models.ExtraOptions;
 import dev.eduardoroth.mediaplayer.models.MediaPlayerNotification;
 import dev.eduardoroth.mediaplayer.models.PlacementOptions;
@@ -138,13 +138,15 @@ public class MediaPlayerService extends MediaSessionService implements Lifecycle
 
         exoPlayer.setRepeatMode(extra.loopOnEnd ? Player.REPEAT_MODE_ONE : Player.REPEAT_MODE_OFF);
 
-//        exoPlayer.setMediaItem(new MediaItem(Uri.parse(videoUrl), extra).getMediaItem());
+        if (videoUrl.startsWith("rtsp")) {
+            MediaSource mediaSource = new RtspMediaSource.Factory()
+                    .setForceUseRtpTcp(true)
+                    .createMediaSource(androidx.media3.common.MediaItem.fromUri(videoUrl));
 
-        MediaSource mediaSource = new RtspMediaSource.Factory()
-                .setForceUseRtpTcp(true)
-                .createMediaSource(MediaItem.fromUri(videoUrl));
-
-        exoPlayer.setMediaSource(mediaSource);
+            exoPlayer.setMediaSource(mediaSource);
+        } else {
+            exoPlayer.setMediaItem(new MediaItem(Uri.parse(videoUrl), extra).getMediaItem());
+        }
 
         Handler handlerCurrentTime = new Handler();
         exoPlayer.addListener(
